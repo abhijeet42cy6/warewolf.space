@@ -1,0 +1,150 @@
+.search-summary {
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.filter-tag {
+    background-color: rgba(74, 95, 193, 0.1);
+    color: var(--accent);
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.warehouse-facilities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.facility-tag {
+    background-color: rgba(74, 95, 193, 0.1);
+    color: var(--accent);
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.warehouse-list-page .section {
+    padding-top: 2rem;
+}
+
+.warehouse-filters {
+    padding: 1.5rem;
+}
+
+.filter-form .filter-basic {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.filter-form .filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-form label {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.filter-form input,
+.filter-form select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.filter-form .wolf-btn {
+    align-self: stretch;
+    height: 100%;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.warehouse-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.warehouse-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.warehouse-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.warehouse-card-content {
+    padding: 1.5rem;
+}
+
+.warehouse-card-content h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    min-height: 44px; /* for 2 lines of text */
+}
+
+.warehouse-location {
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.warehouse-specs {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.warehouse-spec {
+    text-align: center;
+}
+
+.warehouse-spec-value {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.warehouse-spec-label {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.warehouse-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 1rem 0;
+}
+
+.warehouse-price span {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #666;
+} 
