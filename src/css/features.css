@@ -175,13 +175,13 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(13, 228, 34, 0.8);
     margin-bottom: 1rem;
 }
 
 .location i {
     font-size: 1rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(9, 212, 33, 0.6);
 }
 
 .warehouse-specs {

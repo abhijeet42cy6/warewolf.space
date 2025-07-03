@@ -239,7 +239,7 @@ const Footer = () => {
                                     </li>
                                     <li style={contactItemStyle}>
                                         <i className="fas fa-envelope" style={{color: '#4f46e5', fontSize: '0.9rem'}}></i>
-                                        abhishekkumarwhereongo@gmail.com
+                                        abhishekwarewolf@gmail.com
                                     </li>
                                 </ul>
                                 
