@@ -101,7 +101,6 @@ const Home = () => {
                             */}
                             {[
                                 {
-                                    icon: "warehouse",
                                     title: "Premium Storage Facility",
                                     location: "Mumbai, Maharashtra",
                                     specs: {
@@ -109,10 +108,10 @@ const Home = () => {
                                         access: "24/7 Access",
                                         facility: "A/C Climate"
                                     },
-                                    price: "₹45/sq.ft/month"
+                                    price: "₹45/sq.ft/month",
+                                    heroImage: "/img/warehouse_hero.jpg"
                                 },
                                 {
-                                    icon: "industry",
                                     title: "Industrial Warehouse",
                                     location: "Delhi, NCR",
                                     specs: {
@@ -120,10 +119,10 @@ const Home = () => {
                                         access: "12hr Access",
                                         facility: "Dock Loading"
                                     },
-                                    price: "₹35/sq.ft/month"
+                                    price: "₹35/sq.ft/month",
+                                    heroImage: "/img/warehouse_hero2.jpg"
                                 },
                                 {
-                                    icon: "truck-loading",
                                     title: "Logistics Hub",
                                     location: "Bangalore, Karnataka",
                                     specs: {
@@ -131,7 +130,8 @@ const Home = () => {
                                         access: "24/7 Access",
                                         facility: "Secure CCTV"
                                     },
-                                    price: "₹40/sq.ft/month"
+                                    price: "₹40/sq.ft/month",
+                                    heroImage: "/img/warehouse_hero3.jpg"
                                 }
                             ].map((feature, index) => (
                                 <motion.div
@@ -146,15 +146,11 @@ const Home = () => {
                                     }}
                                 >
                                     <div>
-                                        <motion.div 
-                                            className="feature-icon"
-                                            whileHover={{ 
-                                                rotate: [0, -10, 10, -5, 5, 0],
-                                                transition: { duration: 0.5 }
-                                            }}
-                                        >
-                                            <i className={`fas fa-${feature.icon}`}></i>
-                                        </motion.div>
+                                        <img 
+                                            src={feature.heroImage}
+                                            alt={feature.title}
+                                            className="warehouse-hero-image"
+                                        />
                                         <div className="location">
                                             <i className="fas fa-map-marker-alt"></i>
                                             <span>{feature.location}</span>
