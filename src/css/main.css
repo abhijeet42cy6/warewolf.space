@@ -38,6 +38,8 @@ body {
   /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
+  margin-top: 0;
+  background: #003366;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -511,13 +513,6 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Add some top margin to body to account for fixed navbar */
-body {
-    margin-top: 90px;
-    background: #003366;
-    /* color: var(--text-main, #ffffff); */
-}
-
 /* Professional loading animation */
 @keyframes fadeInDown {
     from {
@@ -614,30 +609,67 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
   z-index: 0;
 }
 
-
-
 .hero-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  padding-top: 4rem;
+}
+
+.hero .features-scroll-container {
+  padding: 2rem 0;
+  width: 100%;
+  margin-bottom: 4rem;
+}
+
+.hero .features-row {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  padding: 0;
+  overflow: visible;
+}
+
+.hero .feature-item {
+  flex: 0 0 300px;
+  max-width: 300px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 16px;
+}
+
+.hero .feature-icon {
+  margin-bottom: 1rem;
+}
+
+.hero .feature-item h3 {
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 0.75rem;
+}
+
+.hero .feature-item p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 .hero h1 {
   font-size: 3rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .hero p {
   font-size: 1.25rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   color: var(--text-light);
   max-width: 800px;
   margin-left: auto;
@@ -648,6 +680,8 @@ nav {
   display: flex;
   gap: 1rem;
   justify-content: center;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 /* Services Section */

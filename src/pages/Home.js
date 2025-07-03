@@ -83,6 +83,121 @@ const Home = () => {
         <>
             <section className="hero claw-bg" style={{ padding: '35px' }}>
                 <div className="container hero-center">
+                    <div className="features-scroll-container" style={{ marginBottom: '2rem' }}>
+                        <div className="features-row" ref={featuresRowRef}>
+                            {/* 
+                              TODO: Future Database Integration
+                              1. Create a 'featured_warehouses' table in the database with fields:
+                                 - id: unique identifier
+                                 - title: warehouse name
+                                 - location: city and state
+                                 - area: square feet
+                                 - access_hours: access type (24/7, 12hr)
+                                 - facility_type: (Climate, Loading, CCTV)
+                                 - price_per_sqft: monthly rate
+                                 - last_updated: timestamp
+                              2. Create an API endpoint: GET /api/featured-warehouses
+                              3. Implement real-time pricing updates
+                            */}
+                            {[
+                                {
+                                    icon: "warehouse",
+                                    title: "Premium Storage Facility",
+                                    location: "Mumbai, Maharashtra",
+                                    specs: {
+                                        area: "5,000 sq.ft",
+                                        access: "24/7 Access",
+                                        facility: "A/C Climate"
+                                    },
+                                    price: "₹45/sq.ft/month"
+                                },
+                                {
+                                    icon: "industry",
+                                    title: "Industrial Warehouse",
+                                    location: "Delhi, NCR",
+                                    specs: {
+                                        area: "10,000 sq.ft",
+                                        access: "12hr Access",
+                                        facility: "Dock Loading"
+                                    },
+                                    price: "₹35/sq.ft/month"
+                                },
+                                {
+                                    icon: "truck-loading",
+                                    title: "Logistics Hub",
+                                    location: "Bangalore, Karnataka",
+                                    specs: {
+                                        area: "20,000 sq.ft",
+                                        access: "24/7 Access",
+                                        facility: "Secure CCTV"
+                                    },
+                                    price: "₹40/sq.ft/month"
+                                }
+                            ].map((feature, index) => (
+                                <motion.div
+                                    key={feature.title}
+                                    className="feature-item"
+                                    initial={{ opacity: 0.9, scale: 1 }}
+                                    whileHover={{
+                                        scale: 1.02,
+                                        opacity: 1,
+                                        boxShadow: "0 0 25px rgba(74, 95, 193, 0.3), 0 0 15px rgba(74, 95, 193, 0.2), 0 0 5px rgba(74, 95, 193, 0.1)",
+                                        transition: { duration: 0.2 }
+                                    }}
+                                >
+                                    <div>
+                                        <motion.div 
+                                            className="feature-icon"
+                                            whileHover={{ 
+                                                rotate: [0, -10, 10, -5, 5, 0],
+                                                transition: { duration: 0.5 }
+                                            }}
+                                        >
+                                            <i className={`fas fa-${feature.icon}`}></i>
+                                        </motion.div>
+                                        <div className="location">
+                                            <i className="fas fa-map-marker-alt"></i>
+                                            <span>{feature.location}</span>
+                                        </div>
+                                        <div className="warehouse-specs">
+                                            {Object.entries(feature.specs).map(([key, value]) => (
+                                                <div key={key} className="spec-item">
+                                                    <span className="spec-value">{value}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className="price-section">
+                                            <span className="price">{feature.price}</span>
+                                        </div>
+                                        <motion.button
+                                            className="view-details-btn"
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                        >
+                                            View Details
+                                        </motion.button>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                        <div className="scroll-arrows">
+                            <button 
+                                className="scroll-arrow left" 
+                                onClick={() => handleScroll('left')}
+                                aria-label="Scroll left"
+                            >
+                                <i className="fas fa-chevron-left"></i>
+                            </button>
+                            <button 
+                                className="scroll-arrow right" 
+                                onClick={() => handleScroll('right')}
+                                aria-label="Scroll right"
+                            >
+                                <i className="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
                     <AnimatedWords
                         text="Find the Perfect Warehouse Space"
                         as="h1"
@@ -104,25 +219,6 @@ const Home = () => {
                         <Link to="/warehouses" className="btn btn-secondary wolf-btn">
                             <i className="fas fa-warehouse"></i> Browse Warehouses
                         </Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* This section will be conditional later */}
-            <section className="section">
-                <div className="container">
-                    <div className="login-gate wolf-watermark">
-                        <h3><i className="fas fa-lock"></i> Login for Full Access</h3>
-                        <p>Create an account or log in to access all features including listing your warehouse or viewing detailed information.</p>
-                        <p className="mb-3">You can browse as a guest, but will only see limited results.</p>
-                        <div className="hero-buttons">
-                            <Link to="/login" className="btn btn-primary wolf-btn">
-                                <i className="fas fa-sign-in-alt"></i> Login
-                            </Link>
-                            <Link to="/register" className="btn btn-secondary wolf-btn">
-                                <i className="fas fa-user-plus"></i> Register
-                            </Link>
-                        </div>
                     </div>
                 </div>
             </section>
