@@ -1,11 +1,16 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import '../css/home.css';
 import '../css/warehouse.css'; // For warehouse-card styles
 import '../css/features.css';
+import '../css/mapcard.css'; // For map-three-card styles
+const Terrain = lazy(() => import('./Terrain'));
 
-// Helper to animate words one by one with fade-in-up
+gsap.registerPlugin(ScrollTrigger);
+
 const AnimatedWords = ({ text, as: Tag = 'span', className = '', delay = 0.15 }) => {
     const words = text.split(' ');
     return (
@@ -37,6 +42,258 @@ const AnimatedWords = ({ text, as: Tag = 'span', className = '', delay = 0.15 })
 
 const Home = () => {
     const featuresRowRef = useRef(null);
+    const horizontalSectionRef = useRef(null);
+    const dotsContainerRef = useRef(null);
+    const cardsContainerRef = useRef(null);
+
+    useEffect(() => {
+        console.log('GSAP available:', typeof gsap);
+        console.log('ScrollTrigger available:', typeof ScrollTrigger);
+
+        const timer = setTimeout(() => {
+            const container = featuresRowRef.current;
+            const section = horizontalSectionRef.current;
+            const dotsContainer = dotsContainerRef.current;
+            const cardsContainer = cardsContainerRef.current;
+
+            console.log('Container:', container);
+            console.log('Section:', section);
+            console.log('Dots container:', dotsContainer);
+            console.log('Cards container:', cardsContainer);
+
+            if (container && section) {
+                // Calculate proper scroll distance
+                const cards = container.children;
+                const cardWidth = 300;
+                const gap = 32;
+                const totalWidth = (cardWidth * cards.length * 1.6) + (gap * (cards.length - 1));
+                const viewportWidth = window.innerWidth;
+                const scrollDistance = Math.max(0, totalWidth - viewportWidth + 200);
+
+                console.log('Animation calculations:', {
+                    cardsCount: cards.length,
+                    totalWidth,
+                    viewportWidth,
+                    scrollDistance
+                });
+
+                gsap.set(container, { x: 0 });
+
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "center center", // Start when section center hits viewport center
+                        end: `+=${scrollDistance}`, // Longer scroll distance for smoother animation
+                        scrub: 1,
+                        pin: true,
+                        markers: false, // Disable debug markers
+                        onEnter: () => console.log('ScrollTrigger entered'),
+                        onLeave: () => console.log('ScrollTrigger left'),
+                        onUpdate: (self) => console.log('Progress:', self.progress)
+                    }
+                });
+
+                if (scrollDistance > 0) {
+                    tl.to(container, {
+                        x: -scrollDistance,
+                        duration: 1,
+                        ease: "none"
+                    });
+                }
+            }
+
+            // Dots to Cards Morphing Animation
+            if (dotsContainer) {
+                const dotElements = dotsContainer.children;
+                const dots = Array.from(dotElements).map(el => el.querySelector('.dot-circle'));
+                const cardContents = Array.from(dotElements).map(el => el.querySelector('.card-content'));
+
+                // Set initial state for dots - small and compact
+                gsap.set(dotElements, {
+                    width: 20,
+                    height: 20,
+                    position: 'relative',
+                    display: 'inline-block',
+                    margin: '0 15px',
+                    opacity: 1
+                });
+
+                // Set initial state for dots - very small circles
+                gsap.set(dots, {
+                    width: 20,
+                    height: 20,
+                    borderRadius: '50%',
+                    backgroundColor: '#ffffff',
+                    position: 'relative',
+                    display: 'inline-block',
+                    scale: 1,
+                    boxShadow: '0 4px 15px rgba(255, 255, 255, 0.3)'
+                });
+
+                // Add random floating animation to dots
+                dots.forEach((dot, index) => {
+                    gsap.set(dot, {
+                        x: 0,
+                        y: 0
+                    });
+
+                    // Create random floating animation
+                    gsap.to(dot, {
+                        x: `random(-18, 18)`,
+                        y: `random(-8, 18)`,
+                        rotation: `random(-15, 15)`,
+                        duration: `random(0.5, 1.5)`,
+                        ease: 'power2.inOut',
+                        repeat: -1,
+                        yoyo: true,
+                        delay: index * 0.2
+                    });
+                });
+
+                // Set initial state for card content - hidden behind dots
+                gsap.set(cardContents, {
+                    width: 300,
+                    height: 200,
+                    position: 'absolute',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    padding: '2rem',
+                    opacity: 0,
+                    zIndex: 1,
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    borderRadius: '16px',
+                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    top: 0,
+                    left: 0
+                });
+
+                // Set container initial state - compact at top
+                gsap.set(dotsContainer, {
+                    display: 'flex',
+                    justifyContent: 'center',
+                    height: '150px',
+                    marginBottom: '100px'
+                });
+
+                // Create the morphing animation
+                const morphTL = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: '.map-three-card',
+                        start: 'top center',
+                        end: 'center center',
+                        scrub: 0.3,
+                        markers: false,
+                        onEnter: () => {
+                            // Stop random animation when scroll starts
+                            dots.forEach(dot => {
+                                gsap.killTweensOf(dot);
+                            });
+                        }
+                    }
+                });
+
+                // Phase 1: Dots grow and move apart
+                morphTL.to(dots, {
+                    width: 60,
+                    height: 60,
+                    duration: 0.4,
+                    ease: 'power2.out',
+                    stagger: 0.08
+                }, 0)
+                .to(dotElements, {
+                    margin: '0 40px',
+                    duration: 0.4,
+                    ease: 'power2.out',
+                    stagger: 0.08
+                }, 0)
+
+                // Phase 2: Morph into full cards with content
+                .to(dots, {
+                    width: 300,
+                    height: 200,
+                    borderRadius: '16px',
+                    duration: 0.6,
+                    ease: 'power2.inOut',
+                    stagger: 0.12
+                }, 0.4)
+                .to(dotElements, {
+                    width: 300,
+                    height: 200,
+                    margin: '0 20px',
+                    duration: 0.6,
+                    ease: 'power2.inOut',
+                    stagger: 0.12
+                }, 0.4)
+
+                // Phase 3: Add card styling and reveal content
+                .to(dots, {
+                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    duration: 0.3,
+                    ease: 'power2.out',
+                    stagger: 0.08
+                }, 1.0)
+                .to(cardContents, {
+                    opacity: 1,
+                    duration: 0.4,
+                    ease: 'power2.inOut',
+                    stagger: 0.1
+                }, 1.0)
+
+                // Add hover effects
+                .to(dots, {
+                    rotationY: 5,
+                    duration: 0.3,
+                    ease: 'power2.out',
+                    paused: true,
+                    stagger: 0.05
+                }, 1.4);
+
+                // Add hover interactions
+                Array.from(dotElements).forEach((element, index) => {
+                    const dot = element.querySelector('.dot-circle');
+                    const cardContent = element.querySelector('.card-content');
+                    element.addEventListener('mouseenter', () => {
+                        gsap.to(dot, {
+                            scale: 1.05,
+                            rotationY: 10,
+                            duration: 0.3,
+                            ease: 'power2.out'
+                        });
+                        gsap.to(cardContent, {
+                            scale: 1.02,
+                            duration: 0.3,
+                            ease: 'power2.out'
+                        });
+                    });
+
+                    element.addEventListener('mouseleave', () => {
+                        gsap.to(dot, {
+                            scale: 1,
+                            rotationY: 0,
+                            duration: 0.3,
+                            ease: 'power2.out'
+                        });
+                        gsap.to(cardContent, {
+                            scale: 1,
+                            duration: 0.3,
+                            ease: 'power2.out'
+                        });
+                    });
+                });
+            }
+        }, 500);
+
+        return () => {
+            clearTimeout(timer);
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+            // Kill any remaining animations
+            gsap.killTweensOf('.dot-circle');
+        };
+    }, []);
 
     const handleScroll = (direction) => {
         if (featuresRowRef.current) {
@@ -49,7 +306,6 @@ const Home = () => {
         }
     };
 
-    // In a real app, this would come from an API
     const featuredWarehouses = [
         { id: 1, title: "Premium Storage Facility", location: "Mumbai, Maharashtra", area: 5000, price: 45, access: "24/7", feature: "A/C", featureLabel: "Climate", image: "/img/placeholder1.jpg" },
         { id: 2, title: "Industrial Warehouse", location: "Delhi, NCR", area: 10000, price: 35, access: "12hr", feature: "Dock", featureLabel: "Loading", image: "/img/placeholder2.jpg" },
@@ -81,119 +337,52 @@ const Home = () => {
 
     return (
         <>
-            <section className="hero claw-bg" style={{ padding: '35px' }}>
-                <div className="container hero-center">
-                    <div className="features-scroll-container" style={{ marginBottom: '2rem' }}>
-                        <div className="features-row" ref={featuresRowRef}>
-                            {/* 
-                              TODO: Future Database Integration
-                              1. Create a 'featured_warehouses' table in the database with fields:
-                                 - id: unique identifier
-                                 - title: warehouse name
-                                 - location: city and state
-                                 - area: square feet
-                                 - access_hours: access type (24/7, 12hr)
-                                 - facility_type: (Climate, Loading, CCTV)
-                                 - price_per_sqft: monthly rate
-                                 - last_updated: timestamp
-                              2. Create an API endpoint: GET /api/featured-warehouses
-                              3. Implement real-time pricing updates
-                            */}
-                            {[
-                                {
-                                    title: "Premium Storage Facility",
-                                    location: "Mumbai, Maharashtra",
-                                    specs: {
-                                        area: "5,000 sq.ft",
-                                        access: "24/7 Access",
-                                        facility: "A/C Climate"
-                                    },
-                                    price: "₹45/sq.ft/month",
-                                    heroImage: "/img/warehouse_hero.jpg"
-                                },
-                                {
-                                    title: "Industrial Warehouse",
-                                    location: "Delhi, NCR",
-                                    specs: {
-                                        area: "10,000 sq.ft",
-                                        access: "12hr Access",
-                                        facility: "Dock Loading"
-                                    },
-                                    price: "₹35/sq.ft/month",
-                                    heroImage: "/img/warehouse_hero2.jpg"
-                                },
-                                {
-                                    title: "Logistics Hub",
-                                    location: "Bangalore, Karnataka",
-                                    specs: {
-                                        area: "20,000 sq.ft",
-                                        access: "24/7 Access",
-                                        facility: "Secure CCTV"
-                                    },
-                                    price: "₹40/sq.ft/month",
-                                    heroImage: "/img/warehouse_hero3.jpg"
-                                }
-                            ].map((feature, index) => (
-                                <motion.div
-                                    key={feature.title}
-                                    className="feature-item"
-                                    initial={{ opacity: 0.9, scale: 1 }}
-                                    whileHover={{
-                                        scale: 1.02,
-                                        opacity: 1,
-                                        boxShadow: "0 0 25px rgba(74, 95, 193, 0.3), 0 0 15px rgba(74, 95, 193, 0.2), 0 0 5px rgba(74, 95, 193, 0.1)",
-                                        transition: { duration: 0.2 }
-                                    }}
-                                >
-                                    <div>
-                                        <img 
-                                            src={feature.heroImage}
-                                            alt={feature.title}
-                                            className="warehouse-hero-image"
-                                        />
-                                        <div className="location">
-                                            <i className="fas fa-map-marker-alt"></i>
-                                            <span>{feature.location}</span>
-                                        </div>
-                                        <div className="warehouse-specs">
-                                            {Object.entries(feature.specs).map(([key, value]) => (
-                                                <div key={key} className="spec-item">
-                                                    <span className="spec-value">{value}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div className="price-section">
-                                            <span className="price">{feature.price}</span>
-                                        </div>
-                                        <motion.button
-                                            className="view-details-btn"
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                        >
-                                            View Details
-                                        </motion.button>
-                                    </div>
-                                </motion.div>
-                            ))}
+
+            <section className='map-sex'>
+                <Suspense fallback={<div>Loading map...</div>}>
+                    <Terrain />
+                </Suspense>
+
+                
+            </section>
+            <section className="map-three-card">
+                <div className="container">
+                    <div className="morphing-container" ref={dotsContainerRef}>
+                        <div className="dot-element" data-index="0">
+                            <div className="dot-circle"></div>
+                            <div className="card-content" style={{ opacity: 0 }}>
+                                <div className="card-icon">
+                                    <i className="fas fa-truck"></i>
+                                </div>
+                                <h3>Logistics</h3>
+                                <p>Streamline your supply chain with our comprehensive logistics solutions and expert warehouse management.</p>
+                            </div>
                         </div>
-                        <div className="scroll-arrows">
-                            <button 
-                                className="scroll-arrow left" 
-                                onClick={() => handleScroll('left')}
-                                aria-label="Scroll left"
-                            >
-                                <i className="fas fa-chevron-left"></i>
-                            </button>
-                            <button 
-                                className="scroll-arrow right" 
-                                onClick={() => handleScroll('right')}
-                                aria-label="Scroll right"
-                            >
-                                <i className="fas fa-chevron-right"></i>
-                            </button>
+                        <div className="dot-element" data-index="1">
+                            <div className="dot-circle"></div>
+                            <div className="card-content" style={{ opacity: 0 }}>
+                                <div className="card-icon">
+                                    <i className="fas fa-shipping-fast"></i>
+                                </div>
+                                <h3>Transport</h3>
+                                <p>Efficient transportation services connecting your business to the perfect warehouse locations nationwide.</p>
+                            </div>
+                        </div>
+                        <div className="dot-element" data-index="2">
+                            <div className="dot-circle"></div>
+                            <div className="card-content" style={{ opacity: 0 }}>
+                                <div className="card-icon">
+                                    <i className="fas fa-cogs"></i>
+                                </div>
+                                <h3>Management</h3>
+                                <p>Professional warehouse management services ensuring optimal storage, organization, and inventory control.</p>
+                            </div>
                         </div>
                     </div>
-
+                </div>
+            </section>
+            <section className="hero claw-bg" style={{ padding: '35px' }}>
+                <div className="container hero-center">
                     <AnimatedWords
                         text="Find the Perfect Warehouse Space"
                         as="h1"
@@ -240,8 +429,8 @@ const Home = () => {
                         Three simple steps to connect with the perfect warehouse
                     </motion.p>
 
-                    <div className="grid-3" style={{ 
-                        overflow: 'hidden', 
+                    <div className="grid-3" style={{
+                        overflow: 'hidden',
                         position: 'relative',
                         display: 'grid',
                         gap: '2rem',
@@ -254,12 +443,12 @@ const Home = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, ease: "easeOut" }}
-                            whileHover={{ 
+                            whileHover={{
                                 scale: 1.02,
                                 transition: { duration: 0.2 }
                             }}
                         >
-                            <motion.div 
+                            <motion.div
                                 className="service-icon"
                                 whileHover={{
                                     scale: 1.1,
@@ -291,12 +480,12 @@ const Home = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
-                            whileHover={{ 
+                            whileHover={{
                                 scale: 1.02,
                                 transition: { duration: 0.2 }
                             }}
                         >
-                            <motion.div 
+                            <motion.div
                                 className="service-icon"
                                 whileHover={{
                                     scale: 1.1,
@@ -328,12 +517,12 @@ const Home = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
-                            whileHover={{ 
+                            whileHover={{
                                 scale: 1.02,
                                 transition: { duration: 0.2 }
                             }}
                         >
-                            <motion.div 
+                            <motion.div
                                 className="service-icon"
                                 whileHover={{
                                     scale: 1.1,
@@ -367,63 +556,43 @@ const Home = () => {
                     <h2 className="section-title">Why Choose Warewolf?</h2>
                     <p className="section-subtitle">The leading warehouse marketplace for businesses</p>
 
-                    <div className="features-scroll-container">
-                        <div className="features-row" ref={featuresRowRef}>
-                            {features.map((feature, index) => (
-                                <motion.div
-                                    key={feature.title}
-                                    className="feature-item"
-                                    initial={{ opacity: 0.9, scale: 1 }}
-                                    whileHover={{
-                                        scale: 1.02,
-                                        opacity: 1,
-                                        boxShadow: "0 0 25px rgba(74, 95, 193, 0.3), 0 0 15px rgba(74, 95, 193, 0.2), 0 0 5px rgba(74, 95, 193, 0.1)",
-                                        transition: { duration: 0.2 }
-                                    }}
-                                >
-                                    <motion.div 
-                                        className="feature-icon"
-                                        whileHover={{ 
-                                            rotate: [0, -10, 10, -5, 5, 0],
-                                            transition: { duration: 0.5 }
+                    <div className="horizontal-scroll-section" ref={horizontalSectionRef}>
+                        <div className="features-scroll-container">
+                            <div className="features-row" ref={featuresRowRef} style={{
+                                display: 'flex',
+                                gap: '2rem',
+                                width: 'max-content',
+                                padding: '2rem 0'
+                            }}>
+                                {features.map((feature, index) => (
+                                    <div
+                                        key={feature.title}
+                                        className="feature-item gsap-feature-card"
+                                        style={{
+                                            minWidth: '300px',
+                                            flexShrink: 0
                                         }}
                                     >
-                                        <i className={`fas fa-${feature.icon}`}></i>
-                                    </motion.div>
-                                    <div>
-                                        <motion.h3
-                                            initial={{ y: 0 }}
-                                            whileHover={{ y: -5 }}
-                                            transition={{ duration: 0.2 }}
+                                        <motion.div
+                                            className="feature-icon"
+                                            whileHover={{
+                                                rotate: [0, -10, 10, -5, 5, 0],
+                                                transition: { duration: 0.5 }
+                                            }}
                                         >
-                                            {feature.title}
-                                        </motion.h3>
-                                        <motion.p
-                                            initial={{ opacity: 0.8 }}
-                                            whileHover={{ opacity: 1 }}
-                                            transition={{ duration: 0.2 }}
-                                        >
-                                            {feature.description}
-                                        </motion.p>
+                                            <i className={`fas fa-${feature.icon}`}></i>
+                                        </motion.div>
+                                        <div>
+                                            <h3 style={{ color: 'black' }}>
+                                                {feature.title}
+                                            </h3>
+                                            <p style={{ color: 'black' }}>
+                                                {feature.description}
+                                            </p>
+                                        </div>
                                     </div>
-                                </motion.div>
-                            ))}
-                        </div>
-                        <div className="scroll-arrows">
-                            <button 
-                                className="scroll-arrow left" 
-                                onClick={() => handleScroll('left')}
-                                aria-label="Scroll left"
-                            >
-                                <i className="fas fa-chevron-left"></i>
-                            </button>
-                            <button 
-                                className="scroll-arrow right" 
-                                onClick={() => handleScroll('right')}
-                                aria-label="Scroll right"
-                            >
-                                <i className="fas fa-chevron-right"></i>
-                            </button>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>

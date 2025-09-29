@@ -82,7 +82,6 @@
 }
 
 .warehouse-card {
-    border-radius: 12px;
     overflow: hidden;
     transition: transform 0.3s, box-shadow 0.3s;
 }
@@ -94,8 +93,8 @@
 
 .warehouse-card img {
     width: 100%;
-    height: 200px;
-    object-fit: cover;
+    /* height: 200px; */
+    /* object-fit: cover; */
 }
 
 .warehouse-card-content {

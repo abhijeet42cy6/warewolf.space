@@ -1,6 +1,6 @@
 .hero {
-    background-color: #121212;
-    color: #f5f5f5;
+    background-color: #edeccc;
+    color: #4a4a3a;
     padding: 6rem 0 4rem;
     position: relative;
     min-height: 100vh;
@@ -13,7 +13,6 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at top right, rgba(74, 95, 193, 0.2), transparent 70%);
     z-index: 0;
 }
 
@@ -41,19 +40,9 @@
     margin-bottom: 1.5rem;
 }
 
-.feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
-}
 
 .feature-item {
     position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 
-        0 4px 15px rgba(0, 0, 0, 0.1),
-        0 0 0 1px rgba(74, 95, 193, 0.05);
     transition: all 0.3s ease;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
     backdrop-filter: blur(10px);
@@ -83,9 +72,6 @@
     transition: opacity 0.3s ease;
 }
 
-.feature-item:hover::before {
-    opacity: 1;
-}
 
 .feature-icon {
     width: 50px;
@@ -99,19 +85,8 @@
     position: relative;
 }
 
-.feature-icon::after {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, rgba(74, 95, 193, 0.4), rgba(74, 95, 193, 0.1));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
 
-.feature-item:hover .feature-icon::after {
-    opacity: 1;
-}
+
 
 .feature-icon i {
     font-size: 1.5rem;
@@ -127,40 +102,40 @@
 }
 
 .feature-item h3 {
-    color: rgba(255, 255, 255, 0.95);
+    color: #4a4a3a;
     margin-bottom: 0.75rem;
     font-size: 1.5rem;
     font-weight: 600;
     transition: all 0.3s ease;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.3);
 }
 
 .feature-item:hover h3 {
-    color: #ffffff;
+    color: #3a3a2a;
 }
 
 .feature-item p {
-    color: rgba(255, 255, 255, 0.8);
+    color: #8b8b7a;
     line-height: 1.6;
     font-size: 1rem;
     transition: all 0.3s ease;
 }
 
 .feature-item:hover p {
-    color: rgba(255, 255, 255, 0.95);
+    color: #6b6b5a;
 }
 
 .section-title {
-    color: rgba(255, 255, 255, 0.95);
+    color: #4a4a3a;
     font-size: 2.5rem;
     font-weight: 600;
     text-align: center;
     margin-bottom: 1rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.3);
 }
 
 .section-subtitle {
-    color: rgba(255, 255, 255, 0.8);
+    color: #8b8b7a;
     font-size: 1.125rem;
     text-align: center;
     margin-bottom: 3rem;
@@ -219,42 +194,42 @@
     width: 64px;
     height: 64px;
     margin: 0 auto 1.5rem;
-    background: linear-gradient(135deg, rgba(74, 95, 193, 0.15), rgba(74, 95, 193, 0.05));
+    background: linear-gradient(135deg, rgba(200, 148, 76, 0.15), rgba(200, 148, 76, 0.05));
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    color: rgba(255, 255, 255, 0.9);
+    color: #4a4a3a;
     position: relative;
     transition: all 0.3s ease;
 }
 
 .service-item.card:hover .service-icon {
     transform: scale(1.05);
-    background: linear-gradient(135deg, rgba(74, 95, 193, 0.2), rgba(74, 95, 193, 0.1));
+    background: linear-gradient(135deg, rgba(200, 148, 76, 0.25), rgba(200, 148, 76, 0.15));
     box-shadow: 
-        0 0 20px rgba(74, 95, 193, 0.2),
-        0 0 40px rgba(74, 95, 193, 0.1);
-    color: #ffffff;
+        0 0 20px rgba(200, 148, 76, 0.2),
+        0 0 40px rgba(200, 148, 76, 0.1);
+    color: #3a3a2a;
 }
 
 .service-item.card h3 {
-    color: rgba(255, 255, 255, 0.95);
+    color: #4a4a3a;
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 1rem;
     transition: all 0.3s ease;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.3);
 }
 
 .service-item.card:hover h3 {
     transform: translateY(-2px);
-    color: #ffffff;
+    color: #3a3a2a;
 }
 
 .service-item.card p {
-    color: rgba(255, 255, 255, 0.8);
+    color: #8b8b7a;
     font-size: 1rem;
     line-height: 1.6;
     transition: all 0.3s ease;
@@ -262,7 +237,7 @@
 
 .service-item.card:hover p {
     opacity: 1;
-    color: rgba(255, 255, 255, 0.95);
+    color: #6b6b5a;
 }
 
 .service-item.card:hover {
@@ -284,13 +259,197 @@
 
 /* Fallback for browsers that don't support backdrop-filter */
 @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-    .service-item.card {
-        background: rgba(30, 32, 37, 0.95);
-    }
+.service-item.card {
+background: rgba(30, 32, 37, 0.95);
+}
 }
 
 .login-gate {
-    text-align: center;
-    padding: 2rem;
-    border-radius: var(--border-radius);
+text-align: center;
+padding: 2rem;
+border-radius: var(--border-radius);
 }
+/* 
+.hero-map-bg {
+overflow: hidden;
+position: relative;
+}
+
+.hero-map-bg img {
+width: 100%;
+height: 80vh;
+opacity: 0.5;
+backdrop-filter: blur(20px);
+background-position: center;
+}
+
+.hero-feature-cards {
+position: absolute;
+left: 50%;
+bottom: -70px;
+transform: translateX(-50%);
+display: grid;
+grid-template-columns: repeat(3, minmax(220px, 1fr));
+gap: 1.25rem;
+width: min(1100px, 92%);
+z-index: 20;
+}
+
+.hero-feature-card {
+background: #fff;
+border-radius: 14px;
+padding: 1.25rem 1.25rem;
+box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+border: 1px solid rgba(0,0,0,0.06);
+}
+
+@media (max-width: 900px) {
+    .hero-feature-cards {
+        grid-template-columns: 1fr;
+        bottom: -60px;
+        gap: 1rem;
+        width: min(680px, 92%);
+    }
+} */
+
+/* .features-row-static {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+gap: 2rem;
+padding: 2rem 0;
+}
+
+.container-hero-center {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+z-index: 10;
+width: 100%;
+max-width: 500px;
+padding: 0 0px;
+}
+
+.hero-search-bar {
+display: flex;
+align-items: center;
+background: rgba(255, 255, 255, 1);
+border-radius: 50px;
+padding: 8px;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+backdrop-filter: blur(10px);
+border: 2px solid rgba(74, 95, 193, 0.1);
+}
+
+.search-input {
+flex: 1;
+border: none !important;
+outline: none !important;
+padding: 15px 20px;
+font-size: 16px;
+background: white;
+color: #000 !important;
+font-weight: 500;
+box-shadow: none !important;
+}
+
+.search-input:focus {
+outline: none !important;
+border: none !important;
+box-shadow: none !important;
+}
+
+.search-input::placeholder {
+color: #888 !important;
+font-weight: 400;
+}
+
+.search-btn {
+background: linear-gradient(135deg, #4a5fc1, #6366f1);
+border: none;
+border-radius: 50%;
+width: 50px;
+height: 50px;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+transition: all 0.3s ease;
+color: white;
+font-size: 18px;
+}
+
+.search-btn:hover {
+transform: scale(1.05);
+box-shadow: 0 5px 15px rgba(74, 95, 193, 0.4);
+} */
+
+/* GSAP Feature Cards Styles */
+.gsap-feature-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    will-change: transform, opacity;
+}
+
+.gsap-feature-card:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.gsap-feature-card .feature-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, rgba(200, 148, 76, 0.15), rgba(200, 148, 76, 0.05));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    color: #c8944c;
+}
+
+.gsap-feature-card h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #4a4a3a !important;
+}
+
+.gsap-feature-card p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #8b8b7a !important;
+}
+
+.features-grid {
+    min-height: 400px; /* Ensure space for animations */
+}
+
+/* Horizontal Scroll Section */
+.horizontal-scroll-section {
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.horizontal-scroll-section .features-scroll-container {
+    width: 100%;
+    overflow: hidden;
+    padding: 0 50px; /* Add some padding */
+}
+
+.horizontal-scroll-section .features-row {
+    will-change: transform;
+    display: flex !important;
+    gap: 2rem !important;
+    width: max-content !important;
+}
+
+/* Morphing Dots and Cards Animation Styles - Moved to mapcard.css */
