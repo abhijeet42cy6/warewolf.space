@@ -116,9 +116,10 @@ export default function Terrain() {
     });
 
     // Cleanup function
+    const mapForCleanup = mapRef.current && mapRef.current._leaflet_map ? mapRef.current._leaflet_map : null;
     return () => {
-      if (mapRef.current && mapRef.current._leaflet_id) {
-        mapRef.current._leaflet_map.remove();
+      if (mapForCleanup) {
+        mapForCleanup.remove();
       }
     };
   }, []);

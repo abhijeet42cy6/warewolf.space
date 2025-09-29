@@ -295,16 +295,7 @@ const Home = () => {
         };
     }, []);
 
-    const handleScroll = (direction) => {
-        if (featuresRowRef.current) {
-            const scrollAmount = 320; // card width + gap
-            const currentScroll = featuresRowRef.current.scrollLeft;
-            featuresRowRef.current.scrollTo({
-                left: direction === 'left' ? currentScroll - scrollAmount : currentScroll + scrollAmount,
-                behavior: 'smooth'
-            });
-        }
-    };
+    // Removed unused handleScroll to satisfy CI eslint rules
 
     const featuredWarehouses = [
         { id: 1, title: "Premium Storage Facility", location: "Mumbai, Maharashtra", area: 5000, price: 45, access: "24/7", feature: "A/C", featureLabel: "Climate", image: "/img/placeholder1.jpg" },
