@@ -9,6 +9,7 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 export default function Terrain() {
   const mapRef = useRef(null);
+  const leafletRef = useRef(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
@@ -49,6 +50,8 @@ export default function Terrain() {
   // Handle place selection
   const handlePlaceSelect = (place) => {
     if (mapRef.current && mapRef.current._leaflet_map) {
+      const L = leafletRef.current;
+      if (!L) return;
       const map = mapRef.current._leaflet_map;
       const lat = parseFloat(place.lat);
       const lon = parseFloat(place.lon);
@@ -77,6 +80,7 @@ export default function Terrain() {
   useEffect(() => {
     // Dynamically import Leaflet to avoid SSR issues
     import('leaflet').then((L) => {
+      leafletRef.current = L;
       if (mapRef.current && !mapRef.current._leaflet_id) {
         // Fix default marker icons
         const DefaultIcon = L.icon({
